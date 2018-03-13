@@ -1,19 +1,30 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import Header from './components/header';
-import Button from './components/button';
-import Clock from './components/clock';
-import NumbersList from './components/numbersList'
+// import Header from './components/header';
+// import Button from './components/button';
+// import Clock from './components/clock';
+// import NumbersList from './components/numbersList'
+
+import {Header, Button, Clock, NumbersList} from './components/common';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {counter: 0, displayClock: false, numbers: [0, 1, 2, 3]};
+    this.state = {
+      counter: 0,
+      text: '',
+      displayClock: false,
+      numbers: [0, 1, 2, 3],
+    };
   };
 
   addOne = () => {
     this.setState({ counter: this.state.counter + 1 });
+  };
+
+  handleChange = (event) => {
+    this.setState({ text: event.target.value});
   };
 
   toggleClock = () => {
@@ -24,7 +35,7 @@ class App extends Component {
     const {numbers} = this.state;
     numbers.push(numbers.length);
     this.setState({numbers: numbers});
-  }
+  };
 
   render() {
     const {displayClock} = this.state;
@@ -49,6 +60,10 @@ class App extends Component {
         <p>
           {this.state.counter}
         </p>
+        <br />
+        <input onChange={this.handleChange} value={this.state.text} />
+        <br />
+        <h3>{this.state.text}</h3>
         {clock}
         <Button action={this.toggleClock}>
           {toggleClockMessage}
