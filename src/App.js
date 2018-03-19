@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
+import { Sparklines, SparklinesLine } from 'react-sparklines';
+
 
 // import Header from './components/header';
 // import Button from './components/button';
@@ -15,7 +17,7 @@ class App extends Component {
       counter: 0,
       text: '',
       displayClock: false,
-      numbers: [0, 1, 2, 3],
+      numbers: [2,4 ,16 ,7],
     };
   };
 
@@ -36,6 +38,10 @@ class App extends Component {
     numbers.push(numbers.length);
     this.setState({numbers: numbers});
   };
+
+  clear = () => {
+    this.setState({numbers : []});
+  }
 
   render() {
     const {displayClock} = this.state;
@@ -71,8 +77,16 @@ class App extends Component {
         <Button action={this.addNumber}>
           Add new number
         </Button>
+        <Sparklines data={this.state.numbers} limit={10} width={400} height={10} margin={1}>
+                    <SparklinesLine color="blue" />
+        </Sparklines>
+        <Button action={this.clear}>
+            Clear list
+        </Button>
+
         <NumbersList numbers={this.state.numbers} multiplier={1} />
-        <NumbersList numbers={this.state.numbers} multiplier={2} />
+        <NumbersList numbers={this.state.numbers} multiplier={3} />
+
       </div>
     );
   };
