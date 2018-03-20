@@ -19,8 +19,11 @@ class App extends Component {
     };
   };
 
-  pushNotification = () =>{
-
+  pushNotification = (notificationNumber) =>{
+    const{currentNotifications} = this.state;
+    let notification = this.state.messages[notificationNumber-1];
+    currentNotifications.push(notification);
+    this.setState({notifications:currentNotifications});
   }
 
   handleChange = (event) => {
@@ -45,6 +48,7 @@ class App extends Component {
 
 
   render() {
+
     const {displayClock} = this.state;
     let clock = null;
     let toggleClockMessage = '';
@@ -80,18 +84,18 @@ class App extends Component {
         </Button>
           <br/>
             <br/>
-          <Button>
+          <Button action={this.pushNotification(1)}>
               Save Message 1
           </Button>
 
-          <Button>
+          <Button action={this.pushNotification(1)}>
               Save Message 2
           </Button>
-          <Button>
+          <Button action={this.pushNotification(1)}>
               Save Message 3
           </Button>
           <br/>
-          <Button>
+          < action={this.pushNotification(1)}>
               Save Message 4
           </Button>
           <Button>
@@ -112,7 +116,7 @@ class App extends Component {
           </Button>
           <br/>
           <br/>
-          <Button>
+          <Button action={this.}>
               Display messages
           </Button>
 
