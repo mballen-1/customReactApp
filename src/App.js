@@ -1,13 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Sparklines, SparklinesLine } from 'react-sparklines';
-
-
-// import Header from './components/header';
-// import Button from './components/button';
-// import Clock from './components/clock';
-// import NumbersList from './components/numbersList'
-
 import {Header, Button, Clock, NumbersList} from './components/common';
 
 class App extends Component {
@@ -17,13 +10,18 @@ class App extends Component {
       counter: 0,
       text: '',
       displayClock: false,
-      numbers: [2,4 ,16 ,7],
+      numbers: [],
+      messages:[ " Papá: Lo estoy esperando!", "Tinder: Keep swipping champion", "Telegram: Bienvenido!",
+            "Spotify: beethoven 5th", "Youtube: See new Linkin Park video!", "Backgrounds: New backgrounds added",
+            "Low battery", "Guitar tabs: Metallica nothing else matters", "Welcome to Duolingo!"
+        ],
+      notifications:[],
     };
   };
 
-  addOne = () => {
-    this.setState({ counter: this.state.counter + 1 });
-  };
+  pushNotification = () =>{
+
+  }
 
   handleChange = (event) => {
     this.setState({ text: event.target.value});
@@ -35,13 +33,16 @@ class App extends Component {
 
   addNumber = () => {
     const {numbers} = this.state;
-    numbers.push(numbers.length);
+    let toadd = this.state.text;
+    numbers.push(toadd);
     this.setState({numbers: numbers});
   };
 
   clear = () => {
     this.setState({numbers : []});
   }
+
+
 
   render() {
     const {displayClock} = this.state;
@@ -60,12 +61,6 @@ class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
-        <Button action={this.addOne}>
-          +1
-        </Button>
-        <p>
-          {this.state.counter}
-        </p>
         <br />
         <input onChange={this.handleChange} value={this.state.text} />
         <br />
@@ -77,14 +72,53 @@ class App extends Component {
         <Button action={this.addNumber}>
           Add new number
         </Button>
-        <Sparklines data={this.state.numbers} limit={10} width={400} height={10} margin={1}>
+        <Sparklines data={this.state.numbers} limit={10} width={200} height={25} margin={1}>
                     <SparklinesLine color="blue" />
         </Sparklines>
         <Button action={this.clear}>
             Clear list
         </Button>
+          <br/>
+            <br/>
+          <Button>
+              Save Message 1
+          </Button>
 
-        <NumbersList numbers={this.state.numbers} multiplier={1} />
+          <Button>
+              Save Message 2
+          </Button>
+          <Button>
+              Save Message 3
+          </Button>
+          <br/>
+          <Button>
+              Save Message 4
+          </Button>
+          <Button>
+              Save Message 5
+          </Button>
+          <Button>
+              Save Message 6
+          </Button>
+          <br/>
+          <Button>
+              Save Message 7
+          </Button>
+          <Button>
+              Save Message 8
+          </Button>
+          <Button>
+              Save Message 9
+          </Button>
+          <br/>
+          <br/>
+          <Button>
+              Display messages
+          </Button>
+
+
+
+          <NumbersList numbers={this.state.numbers} multiplier={1} />
         <NumbersList numbers={this.state.numbers} multiplier={3} />
 
       </div>
