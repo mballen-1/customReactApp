@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Sparklines, SparklinesLine } from 'react-sparklines';
-import {Header, Button, Clock, NumbersList} from './components/common';
+import {Header, Button, Clock, NumbersList, MessagesList} from './components/common';
 
 class App extends Component {
   constructor(props) {
@@ -9,7 +9,7 @@ class App extends Component {
     this.state = {
       counter: 0,
       text: '',
-      displayClock: false,
+      displayMessages: false,
       numbers: [],
       messages:[ " Papá: Lo estoy esperando!", "Tinder: Keep swipping champion", "Telegram: Bienvenido!",
             "Spotify: beethoven 5th", "Youtube: See new Linkin Park video!", "Backgrounds: New backgrounds added",
@@ -28,8 +28,8 @@ class App extends Component {
     this.setState({ text: event.target.value});
   };
 
-  toggleClock = () => {
-    this.setState({displayClock: !this.state.displayClock});
+  toggleNotifications = () => {
+    this.setState({displayMessages: !this.state.displayMessages});
   };
 
   addNumber = () => {
@@ -49,14 +49,14 @@ class App extends Component {
 
   render() {
 
-    const {displayClock} = this.state;
-    let clock = null;
-    let toggleClockMessage = '';
-    if(displayClock) {
-      clock =<Clock />;
-      toggleClockMessage = 'Hide Clock';
+    const {displayNotifications} = this.state;
+    let notifications = null;
+    let toggleNotificationsMessage = '';
+    if(displayNotifications) {
+      notifications =<messageList/>;
+      toggleNotificationsMessage= 'Hide Notifications';
     } else {
-      toggleClockMessage = 'Show Clock';
+      toggleNotificationsMessage= 'Show Notifications';
     }
 
     return (
@@ -118,8 +118,11 @@ class App extends Component {
               Display messages
           </Button>
           <NumbersList numbers={this.state.numbers} multiplier={1} />
-
-
+          <MessagesList numbers={this.state.notifications}/>
+          {notifications}
+           <Button action={this.toggleNotifications}>
+                {toggleNotificationsMessage}
+           </Button>
       </div>
     );
   };
