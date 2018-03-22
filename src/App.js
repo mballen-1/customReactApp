@@ -20,10 +20,8 @@ class App extends Component {
   };
 
   pushNotification = (notificationNumber) =>{
-    const{currentNotifications} = this.state;
     let notification = this.state.messages[notificationNumber-1];
-    currentNotifications.push(notification);
-    this.setState({notifications:currentNotifications});
+    this.state.notifications.push(notification);
   }
 
   handleChange = (event) => {
@@ -39,6 +37,8 @@ class App extends Component {
     let toadd = this.state.text;
     numbers.push(toadd);
     this.setState({numbers: numbers});
+    this.state.text='';
+    console.log(this.state.text);
   };
 
   clear = () => {
@@ -61,7 +61,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <Header headerText={'Welcome to React by props'}> Welcome by children </Header>
+        <Header headerText={'Welcome to React motherfucker'}>  </Header>
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
@@ -69,33 +69,31 @@ class App extends Component {
         <input onChange={this.handleChange} value={this.state.text} />
         <br />
         <h3>{this.state.text}</h3>
-        {clock}
-        <Button action={this.toggleClock}>
-          {toggleClockMessage}
-        </Button>
+
         <Button action={this.addNumber}>
           Add new number
         </Button>
-        <Sparklines data={this.state.numbers} limit={10} width={200} height={25} margin={1}>
+        <Button action={this.clear}>
+                    Clear list
+                </Button>
+        <Sparklines data={this.state.numbers} limit={10} width={200} height={25} margin={10}>
                     <SparklinesLine color="blue" />
         </Sparklines>
-        <Button action={this.clear}>
-            Clear list
-        </Button>
+
           <br/>
             <br/>
           <Button action={this.pushNotification(1)}>
               Save Message 1
           </Button>
 
-          <Button action={this.pushNotification(1)}>
+          <Button >
               Save Message 2
           </Button>
-          <Button action={this.pushNotification(1)}>
+          <Button >
               Save Message 3
           </Button>
           <br/>
-          < action={this.pushNotification(1)}>
+          < Button>
               Save Message 4
           </Button>
           <Button>
@@ -116,14 +114,11 @@ class App extends Component {
           </Button>
           <br/>
           <br/>
-          <Button action={this.}>
+          <Button action={this.displayClock}>
               Display messages
           </Button>
-
-
-
           <NumbersList numbers={this.state.numbers} multiplier={1} />
-        <NumbersList numbers={this.state.numbers} multiplier={3} />
+
 
       </div>
     );
