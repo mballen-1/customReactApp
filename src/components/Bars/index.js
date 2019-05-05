@@ -19,11 +19,11 @@ let chartConfigs = {
 
     dataSource: {
         "chart": {
-            "caption": "Pass it ons during May by discipline",
+            "caption": "Attendance in May by discipline",
             "subCaption": "Total sessions:",
             "showValues": "1",
             "showPercentInTooltip": "0",
-            "numberPrefix": "Sesions: ",
+            "numberPrefix": "Attendances: ",
             "enableMultiSlicing": "1",
             "theme": "fusion"
         },
