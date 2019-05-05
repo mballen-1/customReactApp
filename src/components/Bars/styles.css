@@ -1,0 +1,11 @@
+rect {
+    fill: #F0F3F3 !important;
+}
+
+g > g > g > g > g > rect {
+    fill:rgb(93, 98, 181)!important;
+}
+
+div > span >svg > g > text {
+    display: none;
+}

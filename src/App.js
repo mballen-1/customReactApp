@@ -1,9 +1,11 @@
+
 import React, { Component } from 'react';
 import './App.css';
-import { Sparklines, SparklinesLine } from 'react-sparklines';
-import {Header, MessagesList} from './components/common';
-import { Button } from 'semantic-ui-react';
-
+import { MessagesList } from './components/common';
+import Header from './components/header';
+import Pie from './components/Pie';
+import Bars from './components/Bars';
+import CustomForm from './components/form';
 
 class App extends Component {
   constructor(props) {
@@ -12,124 +14,103 @@ class App extends Component {
       counter: 0,
       text: '',
       displayNotifications: false,
-      numbers: [],
-      messages:[["Papá", "Lo estoy esperando!" , "papa"], ["Tinder" , "You have a new match!","tinder"], ["Telegram" ," Bienvenido!","telegram"],
-          ["Spotify", " beethoven 5th","spotify"], ["Youtube" , "See new Linkin Park video!","youtube"], ["Backgrounds", "New backgrounds added","backgrounds"],
-      ["Alert", "Low battery", "low"], ["Guitar tabs"," Metallica nothing else matters","guitar"], ["Duolingo", "Keep practicing!","duolingo"]
-        ],
-      notifications:[],
+      numbers: [2, 4, 6, 2, 4, 6],
+      data: {},
+      messages: [
+        ["Papá", "Lo estoy esperando!", "papa"],
+        ["Tinder", "You have a new match!", "tinder"],
+        ["Telegram", " Bienvenido!", "telegram"],
+        ["Spotify", " beethoven 5th", "spotify"],
+        ["Youtube", "See new Linkin Park video!", "youtube"],
+        ["Backgrounds", "New backgrounds added", "backgrounds"],
+        ["Alert", "Low battery", "low"],
+        ["Guitar tabs", " Metallica nothing else matters", "guitar"],
+        ["Duolingo", "Keep practicing!", "duolingo"]
+      ],
+      notifications: [],
     };
   };
 
-  pushNotification = (notificationNumber) =>{
-    const {notifications} = this.state;
-    notifications.unshift(this.state.messages[notificationNumber-1]);
-    this.setState({notifications:notifications});
+  pushNotification = (notificationNumber) => {
+    const { notifications } = this.state;
+    notifications.unshift(this.state.messages[notificationNumber - 1]);
+    this.setState({ notifications: notifications });
   }
 
   handleChange = (event) => {
-    this.setState({ text: event.target.value});
+    this.setState({ text: event.target.value });
   };
 
   toggleNotifications = () => {
-    this.setState({displayNotifications: !this.state.displayNotifications});
+    this.setState({ displayNotifications: !this.state.displayNotifications });
   };
 
   addNumber = () => {
-    const {numbers} = this.state;
+    const { numbers } = this.state;
     let toadd = this.state.text;
     numbers.push(toadd);
-    this.setState({numbers: numbers});
-    this.setState({text:''});
+    this.setState({ numbers: numbers });
+    this.setState({ text: '' });
     console.log(this.state.text);
   };
 
   clearNumbers = () => {
-    this.setState({numbers : []});
+    this.setState({ numbers: [] });
   }
 
   clearNotifications = () => {
-        this.setState({notifications : []});
-        this.toggleNotifications();
+    this.setState({ notifications: [] });
+    this.toggleNotifications();
   }
 
   render() {
 
-    const {displayNotifications} = this.state;
+    const { displayNotifications } = this.state;
     let notifications = null;
     let toggleNotificationsMessage = '';
 
-    if(displayNotifications) {
-      notifications = <MessagesList messages={this.state.notifications}/>;
-      toggleNotificationsMessage= 'Hide Notifications';
-    } else {
-      toggleNotificationsMessage= 'Show Notifications';
-    }
+    // if (displayNotifications) {
+    notifications = <MessagesList messages={this.state.notifications} />;
+    //   toggleNotificationsMessage = 'Hide Notifications';
+    // } else {
+    //   toggleNotificationsMessage = 'Show Notifications';
+    // }
 
     return (
       <div className="App">
-        <Header headerText={'Welcome to React'}>  </Header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+
+        <Header
+          headerText={'Pass It On Stats'}>
+        </Header>
+        <div>
+          <CustomForm>
+          </CustomForm>
+        </div>
+
+        <div>
+          <div className="app__chartColumn-width app__chartColumn-display" >
+            <Pie></Pie>
+          </div>
+          <div className="app__chartColumn-width app__chartColumn-display">
+            <Bars></Bars>
+          </div>
+        </div>
+
+
         <br />
-        <input onChange={this.handleChange} value={this.state.text} />
         <br />
 
+        
+        <br />
+        <br />
 
-        <Button primary onClick={this.addNumber}>
-          Add new number
-        </Button>
-        <Button secondary onClick={this.clearNumbers}>
-                    Clear list of numbers
-        </Button>
-        <Sparklines data={this.state.numbers} limit={10} width={200} height={25} margin={10}>
-            <SparklinesLine color="blue" />
-        </Sparklines>
-          <br/>
-          <br/>
+        {notifications}
 
-          <Button onClick={() => this.pushNotification(1)}>
-              Save Message 1
-          </Button>
-          <Button onClick={() => this.pushNotification(2)}>
-              Save Message 2
-          </Button>
-          <Button onClick={() => this.pushNotification(3)}>
-              Save Message 3
-          </Button>
-          <br/>
-          <Button onClick={() => this.pushNotification(4)}>
-              Save Message 4
-          </Button>
-          <Button onClick={() => this.pushNotification(5)}>
-              Save Message 5
-          </Button>
-          <Button onClick={() => this.pushNotification(6)}>
-              Save Message 6
-          </Button>
-          <br/>
-          <Button onClick={() => this.pushNotification(7)}>
-              Save Message 7
-          </Button>
-          <Button onClick={() => this.pushNotification(8)}>
-              Save Message 8
-          </Button>
-          <Button onClick={() => this.pushNotification(9)}>
-              Save Message 9
-          </Button>
-
-
-          <br/>
-          <br/>
-
-            {notifications}
-          <Button primary onClick={this.toggleNotifications}>
-                {toggleNotificationsMessage}
-           </Button>
-          <Button secondary onClick={this.clearNotifications}>
-              Clear Notifications
-          </Button>
+        {/* <Button
+          primary
+          onClick={this.toggleNotifications}>
+          {toggleNotificationsMessage}
+        </Button> */}
 
       </div>
     );

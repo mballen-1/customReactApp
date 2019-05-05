@@ -1,0 +1,22 @@
+.form__container-margin {
+    margin: 20px;
+}
+
+.form__container-display {
+    display: block;
+}
+
+label {
+    display: flex;
+    padding-top: 2px;
+    justify-content: space-between;
+    width: 40%;
+}
+
+.ui.input input {
+    max-width: 210px;
+}
+
+.form__abstract-size {
+    min-height: 100px;
+}
