@@ -8,9 +8,12 @@
 
 label {
     display: flex;
-    padding-top: 2px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    -ms-flex-pack: justify;
     justify-content: space-between;
-    width: 40%;
+    width: 20%;
+    margin-left: 40%;
 }
 
 .ui.input input {
@@ -19,4 +22,9 @@ label {
 
 .form__abstract-size {
     min-height: 100px;
+}
+
+.form__button-margin{
+    margin-left: 10%;
+    margin-top: 2%;
 }

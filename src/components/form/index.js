@@ -1,19 +1,61 @@
 import React, { Component } from 'react';
-import { Button, Input } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 import './styles.css';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
-
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 import 'react-datepicker/dist/react-datepicker.css';
+import faker from 'faker'
+import _ from 'lodash'
+import { Select } from 'semantic-ui-react'
+
+// const countryOptions = _.map(faker.definitions.address.country, country => ({
+//   key: country,
+//   text: country,
+//   value: country,
+// }))
+
+const disciplineOptions = [
+    {
+        key: 'Project Management',
+        text: 'Project Management',
+        value: 'Project Management'
+    },
+    {
+        key: 'Development',
+        text: 'Development',
+        value: 'Development'
+    },
+    {
+        key: 'Applications Management',
+        text: 'Applications Management',
+        value: 'Applications Management'
+    },
+    {
+        key: 'Testing',
+        text: 'Testing',
+        value: 'Testing'
+    },
+    {
+        key: 'People Development & Recruitment',
+        text: 'People Development & Recruitment',
+        value: 'People Development & Recruitment'
+    }
+]
 
 export default class CustomForm extends Component {
     constructor(props) {
+        
         super(props);
         this.state = {
             title: '',
+            name: '',
+            discipline: '   ',
             abstract: '',
-            startDate: moment()._d,
-            imageUrl:''
+            date: moment()._d,
+            image: '',
+            hour: '12:00'
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -22,72 +64,94 @@ export default class CustomForm extends Component {
         this.handleAbstractChange = this.handleAbstractChange.bind(this);
         this.handleImgChange = this.handleImgChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-
-        // console.log("moment()" ,moment());
+        this.handleNameChange = this.handleNameChange.bind(this);
     }
 
-    disciplineOptions = [
-        {
-            key: 'Project Management',
-            text: 'Project Management',
-            value: 0
-        },
-        {
-            key: 'Development',
-            text: 'Development',
-            value: 1
-        },
-        {
-            key: 'Applications Management',
-            text: 'Applications Management',
-            value: 2
-        },
-        {
-            key: 'Testing',
-            text: 'Testing',
-            value: 3
-        }
-    ]
+    
     handleTitleChange(event) {
-        this.setState({ 
-            title: event.target.value, 
+        this.setState({
+            title: event.target.value,
         });
     }
 
-    handleDisciplineChange(event) {
-        console.log("event" ,event)
-        this.setState({ 
-            // discipline: event.target.value, 
+    handleDisciplineChange(discipline) {
+        this.setState({
+            discipline: discipline, 
         });
     }
 
     handleAbstractChange(event) {
-        this.setState({ 
+        this.setState({
             abstract: event.target.value,
         });
     }
 
     handleImgChange(event) {
-        this.setState({ 
-            imageUrl: event.target.value,
-         });
+        this.setState({
+            image: event.target.value,
+        });
+    }
+
+    formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+    
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+    
+        return [day, month, year].join('/');
+    }
+
+    resetState() {
+        this.setState({
+            title: '',
+            name: '',
+            abstract: '',
+            date: moment()._d,
+            image: '',
+            hour: '12:00',
+            discipline: ''
+        });
     }
 
     handleSubmit(event) {
-        alert('A name was submitted: ' + this.state.value);
+        alert('A pass it on was submitted: ' + this.state);
         event.preventDefault();
+        console.log("this.state", this.state);
+
+        let currentState = this.state;
+        let currentDate = currentState.date;
+        currentState.date =  this.formatDate(currentDate);
+
+        axios.post(`https://hackoholics.herokuapp.com/passitons`, 
+        currentState )
+            .then(res => {
+                console.log("res", res);
+                console.log("res.data", res.data);
+                this.resetState();
+                console.log("this.state after", this.state);
+            })
+
     }
 
     handleChange(date) {
-        console.log("date", date)
+        // console.log("date", date)
         this.setState({
-            startDate: date
+            date: date
         })
+    }
+
+    handleNameChange(event) {
+        this.setState({
+            name: event.target.value,
+        });
     }
 
     // handleSubmit(e) {
     //     e.preventDefault();
-    //     let main = this.state.startDate
+    //     let main = this.state.date
     //     console.log(main.format('L'));
     // }
 
@@ -111,17 +175,28 @@ export default class CustomForm extends Component {
                         </div>
                     </label>
                     <label>
-                        Discipline:
-                        <Input 
-                            list='languages' 
-                            placeholder="Select presenter's discipline"
-                            onChange={this.handleDisciplineChange}
+                        Presenter:
+                        <div className="ui input">
+                            <input
+                                type="text"
+                                value={this.state.name}
+                                onChange={this.handleNameChange}
+                                placeholder="Presenter"
                             />
-                        <datalist id='languages'>
-                            <option value='Testing' />
-                            <option value='Applications Management' />
-                            <option value='Development' />
-                        </datalist>
+                        </div>
+                    </label>
+                    <label>
+                        Discipline:
+                        {/* <Input
+                            list='languages'
+                            placeholder="Select presenter's discipline"
+                            // onChange={this.handleDisciplineChange}
+                        /> */}
+                        <Select 
+                            placeholder="Select presenter's discipline" 
+                            options={disciplineOptions}
+                            onChange={(e, { value }) => this.handleDisciplineChange(value)}
+                        />
                     </label>
                     <label>
                         Abstract:
@@ -137,28 +212,30 @@ export default class CustomForm extends Component {
                     <label>
                         Date:
                         <DatePicker
-                            selected={this.state.startDate}
+                            selected={this.state.date}
                             onChange={this.handleChange}
-                            name="startDate"
+                            name="date"
                             dateFormat="MM/DD/YYYY"
                         />
                     </label>
                     <label>
-                        Image:
+                        Image URL:
                         <div className="ui input">
-                            <input 
-                                type="text" 
-                                value={this.state.value} 
-                                onChange={this.handleImgChange} 
+                            <input
+                                type="text"
+                                value={this.state.image}
+                                onChange={this.handleImgChange}
                                 placeholder="Place img url"
                             />
                         </div>
                     </label>
                 </form>
                 <Button
+                    className="form__button-margin"
                     primary
                     onClick={this.handleSubmit}>
                     Confirm & Schedule
+                    <Link to='/stats'></Link>
                 </Button>
             </div >
         );

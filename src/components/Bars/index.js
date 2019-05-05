@@ -6,10 +6,12 @@ import FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import './styles.css';
+import axios from 'axios';
+
 
 ReactFC.fcRoot(FusionCharts, Charts, FusionTheme);
 
-const chartConfigs = {
+let chartConfigs = {
     type: 'column2d',
     width: 600,
     height: 400,
@@ -18,39 +20,59 @@ const chartConfigs = {
     dataSource: {
         "chart": {
             "caption": "Pass it ons during May by discipline",
-            "subCaption": "Total sessions: 15",
+            "subCaption": "Total sessions:",
             "showValues": "1",
             "showPercentInTooltip": "0",
             "numberPrefix": "Sesions: ",
             "enableMultiSlicing": "1",
             "theme": "fusion"
         },
-        "data": [
-            {
-                "label": "Testing",
-                "value": "5"
-            },
-            {
-                "label": "Applications Management",
-                "value": "6"
-            },
-            {
-                "label": "Development",
-                "value": "3"
-            },
-            {
-                "label": "Project management",
-                "value": "2"
-            },
-            {
-                "label": "PDR",
-                "value": "1"
-            }
-        ]
+        "data": []
     },
 };
 
 export default class Bars extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            apiData: {}
+        };
+        axios.get(`https://hackoholics.herokuapp.com/statistics/by-month?month=05&year=2019`,
+            {})
+            .then(res => {
+                //console.log("res", res);
+                //console.log("res.data", res.data);
+                this.setData(res.data);
+            })
+    };
+
+    setData(data) {
+        chartConfigs.dataSource["data"] = [
+            {
+                "label": "Testing",
+                "value": data["testing"]
+            },
+            {
+                "label": "Applications Management",
+                "value": data["applications management"]
+            },
+            {
+                "label": "Development",
+                "value": data["development"]
+            },
+            {
+                "label": "Project management",
+                "value": data["project management"]
+            },
+            {
+                "label": "PDR",
+                "value": data["people management and recruitment"]
+            }
+
+        ];
+        chartConfigs.dataSource["chart"]["subcaption"] = "Total sessions " + data["total"];
+    }
+
     render() {
         return <ReactFC {...chartConfigs} />;
     }

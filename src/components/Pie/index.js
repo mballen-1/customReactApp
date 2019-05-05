@@ -6,6 +6,7 @@ import FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import './styles.css';
+import axios from 'axios';
 
 ReactFC.fcRoot(FusionCharts, Charts, FusionTheme);
 
@@ -24,28 +25,53 @@ const chartConfigs = {
       "enableMultiSlicing": "1",
       "theme": "fusion"
     },
-    "data": [
-      {
-        "label": "Development",
-        "value": "6"
-      },
-      {
-        "label": "Applications Management",
-        "value": "3"
-      },
-      {
-        "label": "Testing",
-        "value": "3"
-      },
-      {
-        "label": "PDR",
-        "value": "1"
-      }
-    ]
+    "data": []
   },
 };
 
 export default class Pie extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      apiData: {}
+    };
+
+    axios.get(`https://hackoholics.herokuapp.com/statistics/by-pio?pio=2`,
+      {})
+      .then(res => {
+        //console.log("res", res);
+        console.log("res.data", res.data);
+        this.setData(res.data);
+      })
+  };
+
+  setData(data) {
+    chartConfigs.dataSource["data"] = [
+      {
+        "label": "Testing",
+        "value": data["testing"]
+      },
+      {
+        "label": "Applications Management",
+        "value": data["applications management"]
+      },
+      {
+        "label": "Development",
+        "value": data["development"]
+      },
+      {
+        "label": "Project management",
+        "value": data["project management"]
+      },
+      {
+        "label": "PDR",
+        "value": data["people management and recruitment"]
+      }
+
+    ];
+    chartConfigs.dataSource["chart"]["subcaption"] = "Total atendees " + data["total"];
+  }
   render() {
     return <ReactFC {...chartConfigs} />;
   }
